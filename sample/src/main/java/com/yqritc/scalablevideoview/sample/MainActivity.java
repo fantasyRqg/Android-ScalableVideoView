@@ -1,14 +1,14 @@
 package com.yqritc.scalablevideoview.sample;
 
-import com.yqritc.scalablevideoview.ScalableType;
-import com.yqritc.scalablevideoview.ScalableVideoView;
-
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.yqritc.scalablevideoview.ScalableType;
+import com.yqritc.scalablevideoview.ScalableVideoView;
 
 import java.io.IOException;
 
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         mVideoView = (ScalableVideoView) findViewById(R.id.video_view);
+        mVideoView.setCornerRadius(30);
         findViewById(R.id.btn_next).setOnClickListener(this);
 
         try {

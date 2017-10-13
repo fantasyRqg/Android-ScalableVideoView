@@ -5,7 +5,6 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Matrix;
-import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.util.AttributeSet;
 import android.view.Surface;
-import android.view.TextureView;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -24,8 +22,7 @@ import rqg.fantasy.roundedvideoview.RoundedTextureView;
 /**
  * Created by yqritc on 2015/06/11.
  */
-public class ScalableVideoView extends RoundedTextureView implements TextureView.SurfaceTextureListener,
-        MediaPlayer.OnVideoSizeChangedListener {
+public class ScalableVideoView extends RoundedTextureView implements MediaPlayer.OnVideoSizeChangedListener {
 
     protected MediaPlayer mMediaPlayer;
     protected ScalableType mScalableType = ScalableType.NONE;
@@ -53,27 +50,12 @@ public class ScalableVideoView extends RoundedTextureView implements TextureView
         int scaleType = a.getInt(R.styleable.scaleStyle_scalableType, ScalableType.NONE.ordinal());
         a.recycle();
         mScalableType = ScalableType.values()[scaleType];
-    }
-
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
-        Surface surface = new Surface(surfaceTexture);
-        if (mMediaPlayer != null) {
-            mMediaPlayer.setSurface(surface);
-        }
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return false;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+        this.setSurfaceProvider((surfaceTexture) -> {
+            Surface surface = new Surface(surfaceTexture);
+            if (mMediaPlayer != null) {
+                mMediaPlayer.setSurface(surface);
+            }
+        });
     }
 
     @Override

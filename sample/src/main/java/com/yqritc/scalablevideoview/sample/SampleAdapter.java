@@ -87,6 +87,7 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
             super(view);
             mTextView = (TextView) view.findViewById(R.id.video_text);
             mVideoView = (ScalableVideoView) view.findViewById(R.id.video_view);
+            mVideoView.setCornerRadius(30);
         }
 
         public void setScalableType(ScalableType type) {
