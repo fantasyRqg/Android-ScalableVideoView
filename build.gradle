@@ -27,7 +27,7 @@ allprojects {
 
 ext {
     GROUP = 'com.yqritc.scalablevideoview'
-    VERSION_NAME = "1.0.2"
+    VERSION_NAME = "1.0.3"
     POM_PACKAGING = "aar"
     POM_DESCRIPTION = "Scalable Video View"
 
