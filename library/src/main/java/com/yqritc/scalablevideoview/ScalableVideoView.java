@@ -94,7 +94,6 @@ public class ScalableVideoView extends RoundedTextureView implements MediaPlayer
         if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setOnVideoSizeChangedListener(this);
-            setSurfaceTextureListener(this);
         } else {
             reset();
         }
