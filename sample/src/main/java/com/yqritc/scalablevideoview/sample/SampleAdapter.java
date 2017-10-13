@@ -1,8 +1,5 @@
 package com.yqritc.scalablevideoview.sample;
 
-import com.yqritc.scalablevideoview.ScalableType;
-import com.yqritc.scalablevideoview.ScalableVideoView;
-
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.annotation.RawRes;
@@ -11,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.yqritc.scalablevideoview.ScalableType;
+import com.yqritc.scalablevideoview.ScalableVideoView;
 
 import java.io.IOException;
 

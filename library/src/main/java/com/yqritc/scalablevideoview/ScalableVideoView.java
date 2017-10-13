@@ -19,10 +19,12 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.util.Map;
 
+import rqg.fantasy.roundedvideoview.RoundedTextureView;
+
 /**
  * Created by yqritc on 2015/06/11.
  */
-public class ScalableVideoView extends TextureView implements TextureView.SurfaceTextureListener,
+public class ScalableVideoView extends RoundedTextureView implements TextureView.SurfaceTextureListener,
         MediaPlayer.OnVideoSizeChangedListener {
 
     protected MediaPlayer mMediaPlayer;
@@ -138,7 +140,7 @@ public class ScalableVideoView extends TextureView implements TextureView.Surfac
     }
 
     public void setDataSource(@NonNull Context context, @NonNull Uri uri,
-            @Nullable Map<String, String> headers) throws IOException {
+                              @Nullable Map<String, String> headers) throws IOException {
         initializeMediaPlayer();
         mMediaPlayer.setDataSource(context, uri, headers);
     }
