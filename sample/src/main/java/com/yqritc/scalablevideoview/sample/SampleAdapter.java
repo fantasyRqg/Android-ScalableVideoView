@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.annotation.RawRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,12 +52,22 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
         holder.mVideoView.setScalableType(holder.mScalableType);
     }
 
+
+    private static final String TAG = "SampleAdapter";
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        long start = System.nanoTime();
+        holder.mVideoView.postRelease();
+        Log.d(TAG, "onViewDetachedFromWindow: " + (System.nanoTime() - start));
+    }
+
     private void setVideo(final ScalableVideoView videoView) {
         try {
             videoView.setRawData(mVideoResId);
             videoView.setVolume(0, 0);
             videoView.setLooping(true);
-            videoView.prepare(new MediaPlayer.OnPreparedListener() {
+            videoView.prepareAsync(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     videoView.start();

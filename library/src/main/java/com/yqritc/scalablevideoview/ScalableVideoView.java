@@ -5,12 +5,14 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Surface;
 
 import java.io.FileDescriptor;
@@ -23,6 +25,7 @@ import rqg.fantasy.roundedvideoview.RoundedTextureView;
  * Created by yqritc on 2015/06/11.
  */
 public class ScalableVideoView extends RoundedTextureView implements MediaPlayer.OnVideoSizeChangedListener {
+    private static final String TAG = "ScalableVideoView";
 
     protected MediaPlayer mMediaPlayer;
     protected ScalableType mScalableType = ScalableType.NONE;
@@ -38,7 +41,31 @@ public class ScalableVideoView extends RoundedTextureView implements MediaPlayer
 
     public ScalableVideoView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        addSurfaceTextureListener(new SurfaceTextureListener() {
+            @Override
+            public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+                Log.d(TAG, "onSurfaceTextureAvailable() called with: surface = [" + surface + "], width = [" + width + "], height = [" + height + "]");
+            }
+
+            @Override
+            public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+                Log.d(TAG, "onSurfaceTextureSizeChanged() called with: surface = [" + surface + "], width = [" + width + "], height = [" + height + "]");
+            }
+
+            @Override
+            public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+                Log.d(TAG, "onSurfaceTextureDestroyed() called with: surface = [" + surface + "]");
+                return false;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+//                Log.d(TAG, "onSurfaceTextureUpdated() called with: surface = [" + surface + "]");
+            }
+        });
         this.setSurfaceProvider((surfaceTexture) -> {
+//            Log.v(TAG, "ScalableVideoView: ");
             synchronized (this) {
                 mSurface = new Surface(surfaceTexture);
                 if (mMediaPlayer != null) {
@@ -246,5 +273,22 @@ public class ScalableVideoView extends RoundedTextureView implements MediaPlayer
         reset();
         mMediaPlayer.release();
         mMediaPlayer = null;
+    }
+
+
+    public void postRelease() {
+        MediaPlayer player = mMediaPlayer;
+        mMediaPlayer = null;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (player != null) {
+                    if (player.isPlaying())
+                        player.stop();
+                    player.reset();
+                    player.release();
+                }
+            }
+        }).start();
     }
 }
