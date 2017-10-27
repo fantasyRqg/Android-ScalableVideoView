@@ -26,6 +26,7 @@ public class ScalableVideoView extends RoundedTextureView implements MediaPlayer
 
     protected MediaPlayer mMediaPlayer;
     protected ScalableType mScalableType = ScalableType.NONE;
+    protected Surface mSurface;
 
     public ScalableVideoView(Context context) {
         this(context, null);
@@ -38,9 +39,11 @@ public class ScalableVideoView extends RoundedTextureView implements MediaPlayer
     public ScalableVideoView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.setSurfaceProvider((surfaceTexture) -> {
-            Surface surface = new Surface(surfaceTexture);
-            if (mMediaPlayer != null) {
-                mMediaPlayer.setSurface(surface);
+            synchronized (this) {
+                mSurface = new Surface(surfaceTexture);
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.setSurface(mSurface);
+                }
             }
         });
 
@@ -93,8 +96,15 @@ public class ScalableVideoView extends RoundedTextureView implements MediaPlayer
 
     private void initializeMediaPlayer() {
         if (mMediaPlayer == null) {
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setOnVideoSizeChangedListener(this);
+            synchronized (this) {
+                if (mMediaPlayer == null) {
+                    mMediaPlayer = new MediaPlayer();
+                    mMediaPlayer.setOnVideoSizeChangedListener(this);
+                    if (mSurface != null) {
+                        mMediaPlayer.setSurface(mSurface);
+                    }
+                }
+            }
         } else {
             reset();
         }

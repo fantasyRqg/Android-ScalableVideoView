@@ -16,9 +16,9 @@ android {
     }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:25.4.0'
-    implementation 'rqg.fantasy.roundedvideoview:roundedvideoview:1.0.1'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api 'com.android.support:appcompat-v7:25.4.0'
+    api 'rqg.fantasy.roundedvideoview:roundedvideoview:1.0.2'
 }
 
 

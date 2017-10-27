@@ -1,6 +1,7 @@
 package com.yqritc.scalablevideoview.sample;
 
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -26,19 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mVideoView.setCornerRadius(30);
         findViewById(R.id.btn_next).setOnClickListener(this);
 
-        try {
-            mVideoView.setRawData(R.raw.landscape_sample);
-            mVideoView.setVolume(0, 0);
-            mVideoView.setLooping(true);
-            mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mVideoView.start();
-                }
-            });
-        } catch (IOException ioe) {
-            //ignore
-        }
+
     }
 
     @Override
@@ -152,6 +141,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             default:
                 break;
+        }
+    }
+
+    public void playVideo(View view) {
+        try {
+            mVideoView.setDataSource(this, Uri.parse("https://static.gethover.com/build/images/showcase/video/video_20170219_13-5c4a9452a8.mp4"));
+            mVideoView.setVolume(0, 0);
+            mVideoView.setLooping(true);
+            mVideoView.prepare(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mVideoView.start();
+                }
+            });
+        } catch (IOException ioe) {
+            //ignore
         }
     }
 }
